@@ -1,4 +1,5 @@
 import socket
+from time import sleep
 
 def check(host="8.8.8.8", port=53, timeout=3):
     try:
@@ -11,4 +12,5 @@ def check(host="8.8.8.8", port=53, timeout=3):
 
 
 while True:
+    sleep(5)
     print(check())
