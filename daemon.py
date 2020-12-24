@@ -9,7 +9,7 @@ while True:
     status = checker.check()
     if status: print("ONLINE")
     if status is False:
-        start_day = strftime("%d-%m-%Y")
+        start_day = strftime("%m-%d-%Y")
         start_time = strftime("%H:%M:%S")
         print("OFFLINE START")
     
