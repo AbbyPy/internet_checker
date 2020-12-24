@@ -10,8 +10,3 @@ def check(host="8.8.8.8", port=53, timeout=10):
     except socket.error as err:
         print(err)
         return False
-
-delay = 5
-while True:
-    sleep(delay)
-    print(check())
