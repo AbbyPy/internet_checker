@@ -1,7 +1,7 @@
 import checker
 from time import sleep, strftime
 
-delay = 2
+delay = 5
 
 while True:
     sleep(delay)
