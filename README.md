@@ -24,7 +24,6 @@ RequiredBy=multi-user.target
 
 E' possibile verificare il funzionamento del servizio con `sudo systemctl status internet_checker`
 
-# Controllo dei risultati
-I files .log vengono creati nella stessa cartella in cui si trova lo script daemon.py
-Ogni file di log si intitola con la data del giorno di attività.
+## Controllo dei risultati
+I files .log vengono creati nella stessa cartella in cui si trova lo script daemon.py; ogni file di log si intitola con la data del giorno di attività.
 
