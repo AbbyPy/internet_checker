@@ -19,7 +19,7 @@ RequiredBy=multi-user.target
 ```
 * Ricaricare i daemon con `sudo systemctl daemon-reload`
 * Installare il servizio con `sudo systemctl enable internet_checker`
-* Ricarticare il servizio con `sudo systemctl reload internet_checker`
+* Ricaricare il servizio con `sudo systemctl reload internet_checker`
 * Far ripartire il servizio con `sudo systemctl start internet_checker`
 
 E' possibile verificare il funzionamento del servizio con `sudo systemctl status internet_checker`
