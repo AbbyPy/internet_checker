@@ -1,12 +1,21 @@
-import checker
+import socket
 from time import sleep, strftime, time
+
+
+def check(host="8.8.8.8", port=53, timeout=10):
+    try:
+        socket.setdefaulttimeout(timeout)
+        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
+        return True
+    except socket.error as err:
+        return False
 
 delay = 5
 
 while True:
     sleep(delay)
 
-    status = checker.check()
+    status = check()
     if status: print("ONLINE")
     if status is False:
         start_day = strftime("%m-%d-%Y")
@@ -16,7 +25,7 @@ while True:
     
         while status is False:
             sleep(delay)
-            status = checker.check()
+            status = check()
             print("STILL OFFLINE")
 
         stop_time = strftime("%H:%M:%S")
