@@ -10,6 +10,14 @@ def check(host="8.8.8.8", port=53, timeout=10):
     except socket.error as err:
         return False
 
+
+def write(start_day, start_time, stop_time, delta_time):
+    file_path = f"{start_day}.log"
+    f = open(file_path, "a+")
+    report_text = f"{start_time} - {stop_time} | {delta_time} sec\n"
+    f.write(report_text)
+    f.close()
+
 delay = 5
 
 while True:
@@ -34,9 +42,4 @@ while True:
         
         delta_time = round(stop - start, 1)
 
-        file_path = f"{start_day}.log"
-        f = open(file_path, "a+")
-        error_text = f"{start_time} -- {stop_time} : OFFLINE per {delta_time} sec\n"
-        f.write(error_text)
-        f.close()
-
+        write(start_day, start_time, stop_time, delta_time)
