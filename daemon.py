@@ -7,7 +7,8 @@ from pathlib import Path
 def args_manage():
     parser = ArgumentParser()
     parser.add_argument(
-        "directory",
+        "--directory",
+        default=Path('.'),
         type=Path,
         help="Directory dove salvare i file di log"
         )
