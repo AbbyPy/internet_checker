@@ -12,6 +12,18 @@ def args_manage():
         help="Directory dove salvare i file di log"
         )
     parser.add_argument(
+        "--host",
+        default="8.8.8.8",
+        type=str,
+        help="IP address dell'host che si contatta"
+        )
+    parser.add_argument(
+        "--port",
+        default=53,
+        type=int,
+        help="Porta dell'host alla quale ci si connette"
+        )
+    parser.add_argument(
         "--timeout",
         default=5,
         type=int,
@@ -31,7 +43,7 @@ def args_manage():
     return parser.parse_args()
 
 
-def check(host="8.8.8.8", port=53, timeout=10):
+def check(host, port, timeout):
     try:
         socket.setdefaulttimeout(timeout)
         socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
@@ -54,7 +66,7 @@ args = args_manage()
 while True:
     sleep(args.delay)
 
-    status = check(timeout=args.timeout)
+    status = check(args.host, args.port, args.timeout)
     if status is False:
         start_day = strftime("%m-%d-%Y")
         start_time = strftime("%H:%M:%S")
@@ -62,7 +74,7 @@ while True:
     
         while status is False:
             sleep(args.delay)
-            status = check(timeout=args.timeout)
+            status = check(args.host, args.port, args.timeout)
 
         stop_time = strftime("%H:%M:%S")
         stop = time()
