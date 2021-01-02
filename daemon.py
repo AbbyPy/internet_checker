@@ -1,10 +1,16 @@
 import socket
 from time import sleep, strftime, time
-import argparse
+from argparse import ArgumentParser
+from pathlib import Path
 
 
 def args_manage():
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
+    parser.add_argument(
+        "directory",
+        type=Path,
+        help="Directory dove salvare i file di log"
+        )
     parser.add_argument(
         "--timeout",
         default=5,
@@ -34,8 +40,8 @@ def check(host="8.8.8.8", port=53, timeout=10):
         return False
 
 
-def write(start_day, start_time, stop_time, delta_time, verbose_mode):
-    file_path = f"{start_day}.log"
+def write(directory_path, start_day, start_time, stop_time, delta_time, verbose_mode):
+    file_path = directory_path / f"{start_day}.log"
     f = open(file_path, "a+")
     report_text = f"{start_time} - {stop_time} | {delta_time} sec\n"
     f.write(report_text)
@@ -62,4 +68,4 @@ while True:
         stop = time()
         delta_time = round(stop - start, 1)
 
-        write(start_day, start_time, stop_time, delta_time, args.verbose)
+        write(args.directory, start_day, start_time, stop_time, delta_time, args.verbose)
