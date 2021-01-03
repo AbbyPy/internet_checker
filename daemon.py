@@ -34,13 +34,13 @@ def args_manage():
     parser.add_argument(
         "--delay",
         default=5,
-        type=int,
+        type=float,
         help="Tempo in secondi che intercorre fra un controllo della connessione e l'altro"
         )
     parser.add_argument(
-        "--verbose",
+        "--quite",
         action="store_true",
-        help="Mostra i risulatati dei controlli in tempo reale"
+        help="Non mostra i risulatati dei controlli in tempo reale"
         )
     parser.add_argument(
         "--csv",
@@ -60,12 +60,12 @@ def check(host, port, timeout):
         return False
 
 
-def write(directory_path, start_day, start_time, stop_time, delta_time, verbose_mode, csv_mode):
+def write(directory_path, start_day, start_time, stop_time, delta_time, quite_mode, csv_mode):
     file_path = directory_path / f"{start_day}"
-    report_text = f"{start_time} - {stop_time} | {delta_time} sec\n"
+    report_text = f"{start_time} - {stop_time} | offline per {delta_time} sec\n"
 
 
-    if verbose_mode:
+    if not quite_mode:
         print(report_text)
 
     if csv_mode:
@@ -84,6 +84,7 @@ args = args_manage()
 
 while True:
     sleep(args.delay)
+    if not args.quite: print("online")
 
     status = check(args.host, args.port, args.timeout)
     if status is False:
@@ -99,4 +100,4 @@ while True:
         stop = time()
         delta_time = round(stop - start, 1)
 
-        write(args.directory, start_day, start_time, stop_time, delta_time, args.verbose, args.csv)
+        write(args.directory, start_day, start_time, stop_time, delta_time, args.quite, args.csv)
