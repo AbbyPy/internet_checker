@@ -2,6 +2,7 @@ import socket
 from time import sleep, strftime, time
 from argparse import ArgumentParser
 from pathlib import Path
+import csv
 
 
 def args_manage():
@@ -41,6 +42,11 @@ def args_manage():
         action="store_true",
         help="Mostra i risulatati dei controlli in tempo reale"
         )
+    parser.add_argument(
+        "--csv",
+        action="store_true",
+        help="Scrive i risultati in un file csv"
+        )
     return parser.parse_args()
 
 
@@ -49,17 +55,29 @@ def check(host, port, timeout):
         socket.setdefaulttimeout(timeout)
         socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
         return True
+
     except socket.error as err:
         return False
 
 
-def write(directory_path, start_day, start_time, stop_time, delta_time, verbose_mode):
-    file_path = directory_path / f"{start_day}.log"
-    f = open(file_path, "a+")
+def write(directory_path, start_day, start_time, stop_time, delta_time, verbose_mode, csv_mode):
+    file_path = directory_path / f"{start_day}"
     report_text = f"{start_time} - {stop_time} | {delta_time} sec\n"
-    f.write(report_text)
-    f.close()
-    if verbose_mode: print(report_text)
+
+
+    if verbose_mode:
+        print(report_text)
+
+    if csv_mode:
+        f = open(directory_path / f"{start_day}.csv", "a+")
+        writer = csv.writer(f, delimiter=",")
+        writer.writerow([start_time, stop_time, delta_time])
+        f.close()
+
+    else:
+        f = open(directory_path / f"{start_day}.txt", "a+")
+        f.write(report_text)
+        f.close()
 
 
 args = args_manage()
@@ -81,4 +99,4 @@ while True:
         stop = time()
         delta_time = round(stop - start, 1)
 
-        write(args.directory, start_day, start_time, stop_time, delta_time, args.verbose)
+        write(args.directory, start_day, start_time, stop_time, delta_time, args.verbose, args.csv)
